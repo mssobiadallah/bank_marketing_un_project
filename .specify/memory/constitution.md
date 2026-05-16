@@ -1,50 +1,53 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Bank Marketing ML Project - Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Classical ML Only (NON-NEGOTIABLE)
+Only classical ML models permitted. Deep learning is forbidden.
+Allowed: Logistic Regression, Decision Trees, Random Forests, Extra Trees,
+Gradient Boosting, HistGradientBoosting, XGBoost, LightGBM, CatBoost, SVM, KNN, DummyClassifier.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Two-Track Modelling (NON-NEGOTIABLE)
+Every experiment runs twice: Benchmark Model (with duration) and Realistic Business Model
+(without duration). The app and inference always use the Realistic Business Model.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Main Dataset is bank-additional-full.csv
+All final work uses bank-additional-full.csv (41,188 rows, 21 columns).
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Reproducibility First
+Random seed 42 everywhere. Reproducible via: python scripts/train.py
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Module-First Architecture
+All reusable logic lives in src/. Notebooks call src/ functions only.
+Every src/ module must have type hints and docstrings.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### VI. Business-First Explainability
+Feature importance required for every model. SHAP plots required for final model.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### VII. Graceful Degradation
+Optional libraries (PyCaret, XGBoost, LightGBM, CatBoost, SHAP) must not break core modules.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Model Selection Policy
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Primary metric: average_precision (PR-AUC). Secondary: roc_auc.
+Threshold tuned after model selection.
+Target: ROC-AUC >= 0.75, PR-AUC >= 0.40 on test set.
+
+## Data Policy
+
+- unknown in categorical columns kept as valid category.
+- pdays=999 converted to was_previously_contacted=False.
+- SMOTE inside CV folds only.
+- Class weights preferred over SMOTE for baselines.
+
+## Development Workflow
+
+1. Branch: 001-bank-marketing-ml
+2. Commit per milestone.
+3. Tests pass before milestone is complete.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-05-16 | **Last Amended**: 2026-05-16
