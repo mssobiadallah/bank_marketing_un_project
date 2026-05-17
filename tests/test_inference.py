@@ -151,8 +151,8 @@ class TestPredictSingle:
     def test_returns_required_keys(self, loaded_model):
         model, pipeline = loaded_model
         result = predict_single(model, pipeline, VALID_INPUT)
-        required_keys = {"predicted_class", "probability", "risk_level",
-                         "top_features", "duration_excluded"}
+        required_keys = {"prediction", "subscription_probability", "risk_level",
+                         "top_shap_features", "duration_excluded"}
         assert required_keys.issubset(set(result.keys()))
 
     def test_duration_excluded_is_true(self, loaded_model):
@@ -163,25 +163,25 @@ class TestPredictSingle:
     def test_probability_in_range(self, loaded_model):
         model, pipeline = loaded_model
         result = predict_single(model, pipeline, VALID_INPUT)
-        assert 0.0 <= result["probability"] <= 1.0
+        assert 0.0 <= result["subscription_probability"] <= 1.0
 
     def test_predicted_class_is_0_or_1(self, loaded_model):
         model, pipeline = loaded_model
         result = predict_single(model, pipeline, VALID_INPUT)
-        assert result["predicted_class"] in (0, 1)
+        assert result["prediction"] in (0, 1)
 
     def test_uses_optimal_threshold_not_half(self, loaded_model):
         """Class should be 1 if probability >= OPTIMAL_THRESHOLD, not 0.5."""
         model, pipeline = loaded_model
         result = predict_single(model, pipeline, VALID_INPUT)
-        expected = int(result["probability"] >= OPTIMAL_THRESHOLD)
-        assert result["predicted_class"] == expected
+        expected = int(result["subscription_probability"] >= OPTIMAL_THRESHOLD)
+        assert result["prediction"] == expected
 
     def test_duration_stripped_silently(self, loaded_model):
         model, pipeline = loaded_model
         with_duration = {**VALID_INPUT, "duration": 999}
         result = predict_single(model, pipeline, with_duration)
-        assert result["predicted_class"] in (0, 1)
+        assert result["prediction"] in (0, 1)
 
 
 # ---------------------------------------------------------------------------
@@ -205,6 +205,7 @@ class TestPredictBatch:
         assert "rank" in result.columns
         assert "subscription_probability" in result.columns
         assert "predicted_class" in result.columns
+        assert "risk_level" in result.columns
 
     def test_rank_sorted_descending(self, loaded_model):
         model, pipeline = loaded_model

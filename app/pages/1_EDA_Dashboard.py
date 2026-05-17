@@ -100,11 +100,12 @@ with tabs[3]:
     numeric_cols2 = [c for c in df.select_dtypes("number").columns if c != TARGET_COL]
     feature = st.selectbox("Numeric feature", numeric_cols2, key="biv_num")
     fig, axes = plt.subplots(1, 2, figsize=(10, 3))
-    sns.boxplot(data=df, x=TARGET_COL, y=feature, ax=axes[0], palette={0: "#d62728", 1: "#1f77b4"})
-    axes[0].set_xticklabels(["No", "Yes"])
+    # Create a copy with string target for plotting
+    df_plot = df.copy()
+    df_plot[TARGET_COL] = df_plot[TARGET_COL].map({0: "No", 1: "Yes"})
+    sns.boxplot(data=df_plot, x=TARGET_COL, y=feature, ax=axes[0], palette={"No": "#d62728", "Yes": "#1f77b4"})
     axes[0].set_title(f"{feature} by Subscription")
-    sns.violinplot(data=df, x=TARGET_COL, y=feature, ax=axes[1], palette={0: "#d62728", 1: "#1f77b4"})
-    axes[1].set_xticklabels(["No", "Yes"])
+    sns.violinplot(data=df_plot, x=TARGET_COL, y=feature, ax=axes[1], palette={"No": "#d62728", "Yes": "#1f77b4"})
     axes[1].set_title("Violin Plot")
     plt.tight_layout()
     st.pyplot(fig)

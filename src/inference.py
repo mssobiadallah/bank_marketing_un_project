@@ -241,10 +241,10 @@ def predict_single(
         logger.debug("SHAP failed (non-critical): %s", exc)
 
     return {
-        "predicted_class": y_class,
-        "probability": float(y_proba),
+        "prediction": y_class,
+        "subscription_probability": float(y_proba),
         "risk_level": tier,
-        "top_features": top_features,
+        "top_shap_features": top_features,
         "duration_excluded": True,
     }
 
@@ -307,6 +307,7 @@ def predict_batch(
     result = df.copy()
     result["predicted_class"] = y_class
     result["subscription_probability"] = y_proba
+    result["risk_level"] = [risk_level(p) for p in y_proba]
     result = result.sort_values("subscription_probability", ascending=False)
     result["rank"] = range(1, len(result) + 1)
 

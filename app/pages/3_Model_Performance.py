@@ -62,6 +62,7 @@ st.subheader("📉 ROC & PR Curves (Realistic Business Model)")
 @st.cache_resource(show_spinner="Loading model for curves…")
 def _load_model_and_data():
     from src.inference import load_model_and_pipeline
+    from src.config import FEATURE_SET_B_COLS
     model, pipeline = load_model_and_pipeline(
         MODELS_DIR / REALISTIC_MODEL_FILE,
         MODELS_DIR / PREPROCESSING_PIPELINE_B_FILE,
@@ -70,6 +71,8 @@ def _load_model_and_data():
     df_raw = encode_target(df_raw, TARGET_COL)
     df_raw = add_features(df_raw)
     _, X_test, _, y_test = split_data(df_raw, TARGET_COL, test_size=TEST_SIZE, random_state=RANDOM_SEED)
+    # Select only Feature Set B columns (excludes duration)
+    X_test = X_test[FEATURE_SET_B_COLS]
     return model, pipeline, X_test, y_test
 
 try:
