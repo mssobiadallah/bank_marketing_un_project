@@ -9,6 +9,9 @@
 [![Tests](https://img.shields.io/badge/tests-50%20passing-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## 🚀 [Live Demo on Streamlit Cloud](https://share.streamlit.io)
+> **Deploy your own**: See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for step-by-step instructions
+
 ---
 
 ## Problem Statement
