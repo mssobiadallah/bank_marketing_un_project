@@ -9,9 +9,13 @@ PORT := 8501
 help:  ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-install:  ## Install all dependencies into the active Python environment
+install:  ## Install production dependencies (for running the app)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
+
+install-dev:  ## Install all dependencies including dev tools (for training)
+	$(PIP) install --upgrade pip
+	$(PIP) install -r requirements-dev.txt
 
 test:  ## Run all pytest tests
 	$(PYTHON) -m pytest tests/ -v --tb=short

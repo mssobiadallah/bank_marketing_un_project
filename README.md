@@ -204,6 +204,9 @@ source venv/bin/activate   # macOS / Linux
 # 3. Install dependencies
 make install
 
+# Or for development (includes training tools):
+# make install-dev
+
 # 4. Verify data is present
 ls data/raw/
 
