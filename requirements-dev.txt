@@ -1,0 +1,15 @@
+# Development and Training Requirements
+# Use this for local development and model training
+
+# Include all production requirements
+-r requirements.txt
+
+# AutoML (only needed for training)
+pycaret>=3.3
+
+# Statistics (extended)
+statsmodels>=0.14
+
+# Testing
+pytest>=8.0
+pytest-cov>=5.0
