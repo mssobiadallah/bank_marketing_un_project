@@ -27,12 +27,18 @@ The app will take 2-3 minutes to build and deploy.
 ## What's Included in This Repo
 
 ✅ **All required files for deployment:**
-- `requirements.txt` — All Python dependencies
+- `requirements.txt` — Production dependencies (app only, no training tools)
+- `requirements-dev.txt` — Development dependencies (includes pycaret for training)
 - `app/streamlit_app.py` — Main app entry point
 - `models/*.joblib` — Pre-trained model files (652KB total)
 - `data/raw/*.csv` — Dataset files (11MB total)
 - `.streamlit/config.toml` — App configuration
 - `.python-version` — Python 3.12 specification
+
+**Note**: `pycaret` is excluded from production requirements because:
+- It conflicts with `matplotlib>=3.8`
+- Only needed for model training (not running the app)
+- All models are pre-trained and included in the repo
 
 ---
 
@@ -86,6 +92,10 @@ Open browser to `http://localhost:8501`
 ---
 
 ## Troubleshooting Deployment
+
+### Issue: "No solution found when resolving dependencies"
+**Cause**: Dependency conflict (e.g., pycaret vs matplotlib)
+**Fix**: Already fixed! Production `requirements.txt` excludes training-only packages
 
 ### Issue: "Module not found"
 **Fix**: Check that all imports in `requirements.txt` are listed
